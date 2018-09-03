@@ -11,6 +11,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -27,13 +29,18 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.UIManager;
 import javax.swing.border.LineBorder;
+import javax.swing.event.RowSorterEvent;
+import javax.swing.event.RowSorterListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -302,6 +309,32 @@ public class SnmpPollerMainWindow {
 		dataTable.setRowHeight(25);
 		dataTable.setAutoResizeMode(JTable.AUTO_RESIZE_SUBSEQUENT_COLUMNS);
 		//		dataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
+		dataTable.setAutoCreateRowSorter(true);
+
+		// 設定TABLE預設排序方式
+		TableRowSorter<TableModel> sorter = new TableRowSorter<>(dataTable.getModel());
+		dataTable.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+
+		int columnIndexToSort = 0;
+		sortKeys.add(new RowSorter.SortKey(columnIndexToSort, SortOrder.ASCENDING));
+
+		sorter.setSortKeys(sortKeys);
+		sorter.sort();
+
+		// 設定No. (重新排序時，讓No.重新由1開始流水)
+		sorter.addRowSorterListener(new RowSorterListener() {
+			@Override
+			public void sorterChanged(RowSorterEvent evt) {
+				int indexOfNoColumn = 0;
+				for (int i = 0; i < dataTable.getRowCount(); i++) {
+					dataTable.setValueAt(i + 1, i, indexOfNoColumn);
+				}
+			}
+		});
+
+		// 關閉No.欄位排序功能
+		sorter.setSortable(0, false);
 
 		JScrollPane tableScrollPane = new JScrollPane(dataTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		tableScrollPane.setViewportView(dataTable);

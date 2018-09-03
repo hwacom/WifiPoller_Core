@@ -68,24 +68,34 @@ public class CommonUtils {
 	}
 
 	public static void refreshDataTable(List<UserCurrentInfo> entities) {
-		try {
-			DefaultTableModel model = (DefaultTableModel)dataTable.getModel();
-			model.setRowCount(0); //先清空所有資料
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run(){
+				try {
+					DefaultTableModel model = (DefaultTableModel)dataTable.getModel();
+					model.setRowCount(0); //先清空所有資料
 
-			int rowNo = 1;
-			for (UserCurrentInfo entity : entities) {
-				model.addRow(transEntityField2Array(String.valueOf(rowNo), entity));
-				rowNo++;
+					int rowNo = 1;
+					for (UserCurrentInfo entity : entities) {
+						model.addRow(transEntityField2Array(String.valueOf(rowNo), entity));
+						rowNo++;
+					}
+
+				} catch (Exception e) {
+					log.error(e.toString(), e);
+					CommonUtils.outputMsg(MsgLevel.ERROR, CommonUtils.class, e.toString());
+				}
 			}
-
-		} catch (Exception e) {
-			log.error(e.toString(), e);
-			CommonUtils.outputMsg(MsgLevel.ERROR, CommonUtils.class, e.toString());
-		}
+		});
 	}
 
 	public static void refreshTime() {
-		statusField.setText(Env.FORMAT_YYYYMMDDHHMISS.format(new Date()));
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run(){
+				statusField.setText(Env.FORMAT_YYYYMMDDHHMISS.format(new Date()));
+			}
+		});
 	}
 
 	private static String[] transEntityField2Array(String rowNo, UserCurrentInfo entity) {
@@ -94,66 +104,89 @@ public class CommonUtils {
 		return rowData;
 	}
 
-	public synchronized static void outputMsg(MsgLevel level, Class classObj, String msg) {
-		try {
-			StyledDocument doc = msgPane.getStyledDocument();
+	public synchronized static void outputMsg(MsgLevel level, Class classObj, final String msg) {
+		javax.swing.SwingUtilities.invokeLater(new Runnable(){
+			@Override
+			public void run(){
+				try {
+					StyledDocument doc = msgPane.getStyledDocument();
 
-			final String timestamp = "[".concat(Env.FORMAT_YYYYMMDDHHMISS.format(new Date())).concat("] ");
-			SimpleAttributeSet attrTimestamp = new SimpleAttributeSet();
-			StyleConstants.setForeground(attrTimestamp, Color.GRAY);
+					final String timestamp = "[".concat(Env.FORMAT_YYYYMMDDHHMISS.format(new Date())).concat("] ");
+					SimpleAttributeSet attrTimestamp = new SimpleAttributeSet();
+					StyleConstants.setForeground(attrTimestamp, Color.GRAY);
 
-			msg = msg == null ? "" : msg;
-			final String message = level == MsgLevel.ERROR
-					? "<".concat(classObj.getSimpleName()).concat(">").concat(": ").concat(msg.concat("\n"))
-							: msg.concat("\n");
-					SimpleAttributeSet attrMessage = new SimpleAttributeSet();
+					String oriMsg = msg == null ? "" : msg;
+					final String message = level == MsgLevel.ERROR
+							? "<".concat(classObj.getSimpleName()).concat(">").concat(": ").concat(oriMsg.concat("\n"))
+									: oriMsg.concat("\n");
+							SimpleAttributeSet attrMessage = new SimpleAttributeSet();
 
-					Color foreground = null;
-					boolean bold = true;
+							Color foreground = null;
+							boolean bold = true;
 
-					switch (level) {
-					case INFO:
-						foreground = new Color(60, 179, 113);
-						break;
+							switch (level) {
+							case INFO:
+								foreground = new Color(60, 179, 113);
+								break;
 
-					case WARNING:
-						foreground = Color.ORANGE;
-						break;
+							case WARNING:
+								foreground = Color.ORANGE;
+								break;
 
-					case ERROR:
-						foreground = Color.RED;
-						break;
+							case ERROR:
+								foreground = Color.RED;
+								break;
 
-					default:
-						foreground = Color.WHITE;
-						bold = false;
-						break;
-					}
+							default:
+								foreground = Color.WHITE;
+								bold = false;
+								break;
+							}
 
-					StyleConstants.setForeground(attrMessage, foreground);
-					StyleConstants.setBold(attrMessage, bold);
+							StyleConstants.setForeground(attrMessage, foreground);
+							StyleConstants.setBold(attrMessage, bold);
 
-					String[] lines = doc.getText(0, doc.getLength()).split("\n");
-					if (lines.length >= Env.MAX_MSG_LINES) {
-						StringBuffer sb = new StringBuffer();
+							// 從最末端加入
+							String[] lines = doc.getText(0, doc.getLength()).split("\n");
+							if (lines.length >= Env.MAX_MSG_LINES) {
+								StringBuffer sb = new StringBuffer();
 
-						int max = lines.length-1;
-						for (int i=0; i< Env.MAX_MSG_LINES; i++) {
-							sb.append(lines[max-i]).append("\n");
-						}
+								for (int i=0; i< Env.MAX_MSG_LINES; i++) {
+									sb.append(lines[i]).append("\n");
+								}
 
-						doc.remove(0, sb.length());
-					}
+								doc.remove(0, sb.length());
+							}
 
-					doc.insertString(0, message != null ? message : "", attrMessage);
-					doc.insertString(0, timestamp, attrTimestamp);
+							doc.insertString(doc.getLength(), timestamp, attrTimestamp);
+							doc.insertString(doc.getLength(), message != null ? message : "", attrMessage);
 
-					//					final int extent = scrollPane.getVerticalScrollBar().getModel().getExtent();
-					//					scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum()+extent);
+							/*
+							// 下列為從最前端插入
+							String[] lines = doc.getText(0, doc.getLength()).split("\n");
+							if (lines.length >= Env.MAX_MSG_LINES) {
+								StringBuffer sb = new StringBuffer();
 
-		} catch (Exception e) {
-			log.error(e.toString(), e);
-		}
+								int max = lines.length-1;
+								for (int i=0; i< Env.MAX_MSG_LINES; i++) {
+									sb.append(lines[max-i]).append("\n");
+								}
+
+								doc.remove(0, sb.length());
+							}
+
+							doc.insertString(0, message != null ? message : "", attrMessage);
+							doc.insertString(0, timestamp, attrTimestamp);
+							 */
+
+							final int extent = scrollPane.getVerticalScrollBar().getModel().getExtent();
+							scrollPane.getVerticalScrollBar().setValue(scrollPane.getVerticalScrollBar().getMaximum()+extent);
+
+				} catch (Exception e) {
+					log.error(e.toString(), e);
+				}
+			}
+		});
 	}
 
 }

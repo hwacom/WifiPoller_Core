@@ -288,12 +288,16 @@ public class PollerServiceImpl implements PollerService {
 					final String vbValue = vb.getVariable().toString();
 					UserCurrentInfo entity = userEntity.get(vbkey);
 
-					try {
-						BeanUtils.setProperty(entity, pojoField, vbValue);
-					} catch (Exception e) {
-						log.error("entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
-						log.error(e.toString(), e);
-						throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
+					if (entity != null) {
+						try {
+							BeanUtils.setProperty(entity, pojoField, vbValue);
+						} catch (Exception e) {
+							log.error("entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
+							log.error(e.toString(), e);
+							throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
+						}
+					} else {
+						log.error("entity not found. vbkey >> " + vbkey + " , pojoField: " + pojoField);
 					}
 				}
 			}
@@ -541,6 +545,15 @@ public class PollerServiceImpl implements PollerService {
 		}
 
 		for (UserCurrentInfo insertEntity : nowEntities) {
+			if (StringUtils.isBlank(insertEntity.getYyyymmdd()) || StringUtils.isBlank(insertEntity.getUserMacAddr())
+					|| insertEntity.getApSlotId() == null || StringUtils.isBlank(insertEntity.getApName())
+					|| StringUtils.isBlank(insertEntity.getSsidName())) {
+				log.error("Key field is null or empty >> [yyyymmdd]: " + insertEntity.getYyyymmdd() + " , [userMacAddr]: " + insertEntity.getUserMacAddr()
+				+ " , [apSlotId]: " + insertEntity.getApSlotId() + " , [apName]: " + insertEntity.getApName() + " , [ssidName]: " + insertEntity.getSsidName()
+				+ " , [apMacAddr]: " + insertEntity.getApMacAddr());
+				continue;
+			}
+
 			final Date nowDate = new Date();
 			// SNR = SIGNAL_STRENGTH - NOISE_LEVEL >> NOISE_LEVEL = SIGNAL_STRENGTH - SNR
 			insertEntity.setNoiseLevel(
