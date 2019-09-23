@@ -108,7 +108,7 @@ public class PollerServiceImpl implements PollerService {
 	}
 
 	/**
-	 * ³Ğ«ØJOB
+	 * å‰µå»ºJOB
 	 * @param scheduler
 	 * @param triggerKey
 	 * @param jobKey
@@ -234,7 +234,7 @@ public class PollerServiceImpl implements PollerService {
 			}
 
 			/*
-			 * ¥ı¬d¸ß AP MOBILE USER KEY (MOBILE_MAC_ADDR) (¦]MCA¬°«áÄò¸ê®Æªºkey­È¤º®e¤§¤@)
+			 * å…ˆæŸ¥è©¢ AP MOBILE USER KEY (MOBILE_MAC_ADDR) (å› MCAç‚ºå¾ŒçºŒè³‡æ–™çš„keyå€¼å…§å®¹ä¹‹ä¸€)
 			 */
 			List<String> oidList = new ArrayList<String>();
 			oidList.add(Env.MIB_MOBILE_KEY_OID);
@@ -270,11 +270,11 @@ public class PollerServiceImpl implements PollerService {
 				}
 			}
 
-			//ªì©l¤Æ & GC
+			//åˆå§‹åŒ– & GC
 			oidList.clear();
 
 			/*
-			 * ¬d¸ß AP MOBILE USER ¬ÛÃö¸ê®Æ
+			 * æŸ¥è©¢ AP MOBILE USER ç›¸é—œè³‡æ–™
 			 */
 			oidList.addAll(Env.MIB_USERINFO_TABLE_FIELD_OID_MAPPING.values());
 			Map<String, List<VariableBinding>> infoMap = snmpUtils.pollData(oidList);
@@ -302,11 +302,11 @@ public class PollerServiceImpl implements PollerService {
 				}
 			}
 
-			//ªì©l¤Æ & GC
+			//åˆå§‹åŒ– & GC
 			oidList.clear();
 
 			/*
-			 * ¬d¸ß AP KEY (AP_MAC_ADDR) (¦]MCA¬°«áÄò¸ê®Æªºkey­È¤º®e¤§¤@)
+			 * æŸ¥è©¢ AP KEY (AP_MAC_ADDR) (å› MCAç‚ºå¾ŒçºŒè³‡æ–™çš„keyå€¼å…§å®¹ä¹‹ä¸€)
 			 */
 			oidList.add(Env.MIB_AP_KEY_OID);
 			Map<String, List<VariableBinding>> apkeyMap = snmpUtils.pollData(oidList);
@@ -334,11 +334,11 @@ public class PollerServiceImpl implements PollerService {
 				}
 			}
 
-			//ªì©l¤Æ & GC
+			//åˆå§‹åŒ– & GC
 			oidList.clear();
 
 			/*
-			 * ¬d¸ß AP_NAME ¸ê®Æ >> Key = AP_MAC_DECIMAL
+			 * æŸ¥è©¢ AP_NAME è³‡æ–™ >> Key = AP_MAC_DECIMAL
 			 */
 			oidList.add(Env.MIB_APNAME_OID);
 			Map<String, List<VariableBinding>> apnameMap = snmpUtils.pollData(oidList);
@@ -366,11 +366,11 @@ public class PollerServiceImpl implements PollerService {
 				}
 			}
 
-			//ªì©l¤Æ & GC
+			//åˆå§‹åŒ– & GC
 			oidList.clear();
 
 			/*
-			 * ¬d¸ß CNANNEL ¸ê®Æ >> Key = USER_MAC + AP_SLOT
+			 * æŸ¥è©¢ CNANNEL è³‡æ–™ >> Key = USER_MAC + AP_SLOT
 			 */
 			oidList.add(Env.MIB_CHANNEL_OID);
 			Map<String, List<VariableBinding>> channelMap = snmpUtils.pollData(oidList);
@@ -383,7 +383,7 @@ public class PollerServiceImpl implements PollerService {
 					final String vbValue = vb.getVariable().toString();
 
 					/*
-					 * ¦¹®Évbkey¬° USER_MAC + AP_SLOT (bsnAPIfPhyChannelNumber)
+					 * æ­¤æ™‚vbkeyç‚º USER_MAC + AP_SLOT (bsnAPIfPhyChannelNumber)
 					 */
 					for (UserCurrentInfo entity : userEntity.values()) {
 						if (entity.getApMacAddrDecimal() == null || entity.getApSlotId() == null) {
@@ -424,7 +424,7 @@ public class PollerServiceImpl implements PollerService {
 	}
 
 	private Double calculateQty(long firstTime, long lastTime, long addedBytes, String mac) {
-		// AVG_SEND_DATA = SEND_DATA / (NOW_TIME - LAST_DISCONNECT_TIME)[¤À]
+		// AVG_SEND_DATA = SEND_DATA / (NOW_TIME - LAST_DISCONNECT_TIME)[åˆ†]
 		/*
 		 * bytesPerMilesecond / 1000 >> KB
 		 * milesecond / 1000 / 60 >> minute
@@ -491,19 +491,17 @@ public class PollerServiceImpl implements PollerService {
 							&& StringUtils.equals(db.getSsidName(), now.getSsidName())) {
 
 						/*
-						 * Javers => ¥i¥Î©ó¤ñ¹ï¨â­ÓBean¤º®e®t²§
+						 * Javers => å¯ç”¨æ–¼æ¯”å°å…©å€‹Beanå…§å®¹å·®ç•°
 						Javers javers = JaversBuilder.javers()
 								.withListCompareAlgorithm(ListCompareAlgorithm.LEVENSHTEIN_DISTANCE)
 								.build();
-
 						Diff diff = javers.compare(db, now);
 						System.out.println(diff);
-
 						if (diff.getChanges() != null && !diff.getChanges().isEmpty()) {
 						 */
 
 						/*
-						 * ¦³¼´¦^¸ê®Æªí¥ÜUSER¤´¦b³sºôª¬ºA¡A¦]¦¹´Nºâ·í¤UµL¥ô¦ó¶Ç¿é©Î±µ¦¬µ¥®t²§¡A¤´¥²¶·§ó·sLAST_DISCONNECT_TIME
+						 * æœ‰æ’ˆå›è³‡æ–™è¡¨ç¤ºUSERä»åœ¨é€£ç¶²ç‹€æ…‹ï¼Œå› æ­¤å°±ç®—ç•¶ä¸‹ç„¡ä»»ä½•å‚³è¼¸æˆ–æ¥æ”¶ç­‰å·®ç•°ï¼Œä»å¿…é ˆæ›´æ–°LAST_DISCONNECT_TIME
 						 */
 						final Long sendDataAddedQty = now.getSendDataBytes() - db.getSendDataBytes();
 						final Long receiveDataAddedQty = now.getReceiveDataBytes() - db.getReceiveDataBytes();
@@ -572,8 +570,8 @@ public class PollerServiceImpl implements PollerService {
 			insertEntity.setSendData(new Long(Math.round(insertEntity.getSendDataBytes() / 1000)));			// Bytes convert to KB
 			insertEntity.setReceiveData(new Long(Math.round(insertEntity.getReceiveDataBytes() / 1000)));	// Bytes convert to KB
 			insertEntity.setFirstConnectTime(nowDate);
-			insertEntity.setAvgSendData(new Double(0));			// ²Ä¤@¦¸¥X²{®É¥­§¡­Èµ¹0
-			insertEntity.setAvgReceiveData(new Double(0));		// ²Ä¤@¦¸¥X²{®É¥­§¡­Èµ¹0
+			insertEntity.setAvgSendData(new Double(0));			// ç¬¬ä¸€æ¬¡å‡ºç¾æ™‚å¹³å‡å€¼çµ¦0
+			insertEntity.setAvgReceiveData(new Double(0));		// ç¬¬ä¸€æ¬¡å‡ºç¾æ™‚å¹³å‡å€¼çµ¦0
 			insertEntity.setCreateBy(Env.SYSTEM_USER_NAME);
 			insertEntity.setCreateTime(nowDate);
 			accessDAO.insertUserCurrentInfo(insertEntity);
@@ -588,7 +586,6 @@ public class PollerServiceImpl implements PollerService {
 		/*
 		for (UserCurrentInfo entity : entities.values()) {
 //			UserCurrentInfo dbEntity = accessDAO.findUserCurrentInfoByKeys(entity.getUserMacAddr(), entity.getApSlotId(), entity.getApName(), entity.getSsidName());
-
 			final Date nowDate = new Date();
 			// SNR = SIGNAL_STRENGTH - NOISE_LEVEL >> NOISE_LEVEL = SIGNAL_STRENGTH - SNR
 			entity.setNoiseLevel(entity.getSignalStrength() - entity.getSnr());
@@ -597,11 +594,9 @@ public class PollerServiceImpl implements PollerService {
 			entity.setUpdateTime(nowDate);
 			entity.setSendData(Math.round(entity.getSendData() / 1000));		// Bytes convert to KB
 			entity.setReceiveData(Math.round(entity.getReceiveData() / 1000));	// Bytes convert to KB
-
 			if (dbEntity != null) {
 				final int sendDataAddedQty = entity.getSendData() - dbEntity.getSendData();
 				final int receiveDataAddedQty = entity.getReceiveData() - dbEntity.getReceiveData();
-
 				dbEntity.setChannel(entity.getChannel());
 				dbEntity.setSignalStrength(entity.getSignalStrength());
 				dbEntity.setNoiseLevel(entity.getNoiseLevel());
@@ -615,11 +610,10 @@ public class PollerServiceImpl implements PollerService {
 						calculateQty(dbEntity.getFirstConnectTime().getTime(), dbEntity.getLastDisconnectTime().getTime(), receiveDataAddedQty));
 				dbEntity.setUpdateTime(entity.getUpdateTime());
 				accessDAO.updateUserCurrentInfo(dbEntity);
-
 			} else {
 				entity.setFirstConnectTime(new Date());
-				entity.setAvgSendData(0);		// ²Ä¤@¦¸¥X²{®É¥­§¡­Èµ¹0
-				entity.setAvgReceiveData(0);	// ²Ä¤@¦¸¥X²{®É¥­§¡­Èµ¹0
+				entity.setAvgSendData(0);		// ç¬¬ä¸€æ¬¡å‡ºç¾æ™‚å¹³å‡å€¼çµ¦0
+				entity.setAvgReceiveData(0);	// ç¬¬ä¸€æ¬¡å‡ºç¾æ™‚å¹³å‡å€¼çµ¦0
 				entity.setCreateBy(Env.SYSTEM_USER_NAME);
 				entity.setCreateTime(nowDate);
 				accessDAO.insertUserCurrentInfo(entity);

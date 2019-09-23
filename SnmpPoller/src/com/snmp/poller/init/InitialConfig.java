@@ -1,6 +1,5 @@
 package com.snmp.poller.init;
 
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -84,7 +83,7 @@ public class InitialConfig {
 
 		try {
 			ClassLoader classLoader = getClass().getClassLoader();
-			input = new FileInputStream(classLoader.getResource("config.properties").getFile());
+			input = classLoader.getResourceAsStream("config.properties");
 			prop.load(input);
 
 			System.out.println(prop);
