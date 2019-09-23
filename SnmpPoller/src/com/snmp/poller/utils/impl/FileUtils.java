@@ -32,7 +32,7 @@ public class FileUtils {
 		try {
 			if (entities != null && !entities.isEmpty()) {
 				if (StringUtils.isBlank(Env.OUTPUT_FILE_PATH)) {
-					throw new Exception("Àô¹ÒÅÜ¼Æ¥¼³]©w >> Env.OUTPUT_FILE_PATH: ["+Env.OUTPUT_FILE_PATH+"]");
+					throw new Exception("ç³»çµ±ç’°å¢ƒåƒæ•¸æœªè¨­å®š >> Env.OUTPUT_FILE_PATH: ["+Env.OUTPUT_FILE_PATH+"]");
 				}
 
 				if (!Files.isDirectory(pathFileDir, LinkOption.NOFOLLOW_LINKS)) {

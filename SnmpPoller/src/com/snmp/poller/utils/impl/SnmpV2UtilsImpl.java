@@ -43,11 +43,11 @@ public class SnmpV2UtilsImpl implements SnmpUtils {
 			target.setAddress(GenericAddress.parse(udpAddress));
 			target.setVersion(version);
 			target.setTimeout(2 * 1000L); 	// milliseconds
-			target.setRetries(3); 			// retry 3¦¸
+			target.setRetries(3); 			// retry 3æ¬¡
 
 			try {
 				udpTransportMapping = new DefaultUdpTransportMapping();
-				// ³o¸Ì¤@©w­n©I¥s listen, ¤~¯à¦¬¨ìµ²ªG
+				// é€™è£¡ä¸€å®šè¦å‘¼å« listen, æ‰èƒ½æ”¶åˆ°çµæœ
 				udpTransportMapping.listen();
 				snmp = new Snmp(udpTransportMapping);
 
@@ -105,8 +105,8 @@ public class SnmpV2UtilsImpl implements SnmpUtils {
 				pdu.add(new VariableBinding(new OID(oid)));
 			}
 
-			// ¥H¦P¨Bªº¤è¦¡µo°e snmp get, ·|µ¥«İtarget ³]©wªº timeout ®É¶¡µ²§ô«á
-			// ´N·|¥H Request time out ªº¤è¦¡ return ¦^¨Ó
+			// ä»¥åŒæ­¥çš„æ–¹å¼ç™¼é€ snmp get, æœƒç­‰å¾…target è¨­å®šçš„ timeout æ™‚é–“çµæŸå¾Œ
+			// å°±æœƒä»¥ Request time out çš„æ–¹å¼ return å›ä¾†
 			ResponseEvent response = snmp.send(pdu, target);
 			// System.out.println("PeerAddress:" + response.getPeerAddress());
 			PDU responsePdu = response.getResponse();

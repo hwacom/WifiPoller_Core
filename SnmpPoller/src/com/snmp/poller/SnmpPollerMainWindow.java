@@ -70,7 +70,7 @@ public class SnmpPollerMainWindow {
 	private static JTextPane msgPane;
 	private static JScrollPane msgScrollPane;
 
-	private final static String FONT_NAME = "\u5FAE\u8EDF\u6B63\u9ED1\u9AD4"; //·L³n¥¿¶ÂÅé
+	private final static String FONT_NAME = "\u5FAE\u8EDF\u6B63\u9ED1\u9AD4"; //å¾®è»Ÿæ­£é»‘é«”
 	private static JTextPane pingResultPane;
 	private static JTextField inputCommField;
 	/**
@@ -97,11 +97,11 @@ public class SnmpPollerMainWindow {
 		CommonUtils.setScrollPane(msgScrollPane);
 		CommonUtils.setDataTable(dataTable);
 		CommonUtils.setStatusField(statusField);
-		CommonUtils.outputMsg(MsgLevel.NORMAL, SnmpPollerMainWindow.class, "ªì©l¤Æ¶}©l...");
+		CommonUtils.outputMsg(MsgLevel.NORMAL, SnmpPollerMainWindow.class, "åˆå§‹åŒ–é–‹å§‹...");
 
 		InitialConfig initConfig = new InitialConfig();
 		initConfig.init();
-		CommonUtils.outputMsg(MsgLevel.NORMAL, SnmpPollerMainWindow.class, "ªì©l¤Æ§¹¦¨!");
+		CommonUtils.outputMsg(MsgLevel.NORMAL, SnmpPollerMainWindow.class, "åˆå§‹åŒ–å®Œæˆ!");
 
 		inputIpField.setText(Env.TARGET_UDP_ADDR);
 		inputCommField.setText(Env.TARGET_COMMUNITY);
@@ -115,7 +115,7 @@ public class SnmpPollerMainWindow {
 
 	private static void doPing(final String ipAddr) {
 		if (StringUtils.isBlank(ipAddr)) {
-			showPopup(JOptionPane.WARNING_MESSAGE, "½Ğ¥ı¿é¤JIP !!", "Warining");
+			showPopup(JOptionPane.WARNING_MESSAGE, "è«‹å…ˆè¼¸å…¥IP !!", "Warining");
 
 		} else {
 			boolean success = CommonUtils.pingIpAddr(ipAddr);
@@ -161,7 +161,7 @@ public class SnmpPollerMainWindow {
 				}
 			}
 		});
-		frmWifipoller.setFont(new Font("·L³n¥¿¶ÂÅé", Font.PLAIN, 15));
+		frmWifipoller.setFont(new Font("å¾®è»Ÿæ­£é»‘é«”", Font.PLAIN, 15));
 		frmWifipoller.setTitle("Wifi Poller System");
 		frmWifipoller.setBackground(Color.WHITE);
 		frmWifipoller.getContentPane().setBackground(new Color(255, 255, 255));
@@ -208,7 +208,7 @@ public class SnmpPollerMainWindow {
 			public void actionPerformed(ActionEvent event) {
 
 				if (StringUtils.isBlank(inputIpField.getText().trim()) || StringUtils.isBlank(inputCommField.getText().trim())) {
-					showPopup(JOptionPane.WARNING_MESSAGE, "½Ğ¿é¤JIP¤ÎCommunity !!", "Warining");
+					showPopup(JOptionPane.WARNING_MESSAGE, "è«‹è¼¸å…¥IPåŠCommunity !!", "Warining");
 					inputIpField.requestFocus();
 					return;
 				}
@@ -217,7 +217,7 @@ public class SnmpPollerMainWindow {
 					pollerService = new PollerServiceImpl();
 				}
 
-				if (StringUtils.equals(btnStart.getText(), "±Ò°Ê")) {
+				if (StringUtils.equals(btnStart.getText(), "å•Ÿå‹•")) {
 					final String ipAddr = inputIpField.getText();
 					final String community = inputCommField.getText();
 
@@ -228,12 +228,12 @@ public class SnmpPollerMainWindow {
 					Env.TARGET_COMMUNITY = community;
 
 					pollerService.startUpJobs();
-					btnStart.setText("¼È°±");
+					btnStart.setText("æš«åœ");
 					CommonUtils.outputMsg(MsgLevel.WARNING, SnmpPollerMainWindow.class, "Start polling..  ["+Env.TARGET_UDP_ADDR+"] ["+Env.TARGET_COMMUNITY+"]");
 
 				} else {
 					pollerService.pauseJobs();
-					btnStart.setText("±Ò°Ê");
+					btnStart.setText("å•Ÿå‹•");
 					CommonUtils.outputMsg(MsgLevel.WARNING, SnmpPollerMainWindow.class, "Stop polling!");
 
 					inputIpField.setEditable(true);
@@ -311,7 +311,7 @@ public class SnmpPollerMainWindow {
 		//		dataTable.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 		dataTable.setAutoCreateRowSorter(true);
 
-		// ³]©wTABLE¹w³]±Æ§Ç¤è¦¡
+		// è¨­å®šTABLEé è¨­æ’åºæ–¹å¼
 		TableRowSorter<TableModel> sorter = new TableRowSorter<>(dataTable.getModel());
 		dataTable.setRowSorter(sorter);
 		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
@@ -322,7 +322,7 @@ public class SnmpPollerMainWindow {
 		sorter.setSortKeys(sortKeys);
 		sorter.sort();
 
-		// ³]©wNo. (­«·s±Æ§Ç®É¡AÅıNo.­«·s¥Ñ1¶}©l¬y¤ô)
+		// è¨­å®šNo. (é‡æ–°æ’åºæ™‚ï¼Œè®“No.é‡æ–°ç”±1é–‹å§‹æµæ°´)
 		sorter.addRowSorterListener(new RowSorterListener() {
 			@Override
 			public void sorterChanged(RowSorterEvent evt) {
@@ -333,7 +333,7 @@ public class SnmpPollerMainWindow {
 			}
 		});
 
-		// Ãö³¬No.Äæ¦ì±Æ§Ç¥\¯à
+		// é—œé–‰No.æ¬„ä½æ’åºåŠŸèƒ½
 		sorter.setSortable(0, false);
 
 		JScrollPane tableScrollPane = new JScrollPane(dataTable, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);

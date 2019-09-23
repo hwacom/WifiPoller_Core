@@ -25,10 +25,10 @@ public class BaseDAOImpl {
 
 	protected Connection getConnect() throws Exception {
 		if (connDB == null) {
-			//«Ø¥ßÅX°Êµ{¦¡¡A³sµ²odbc¦ÜMicrosoft Access
+			//å»ºç«‹é©…å‹•ç¨‹å¼ï¼Œé€£çµodbcè‡³Microsoft Access
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 
-			//¤U¦C¦r¦êªº://¤§«á­n¥[¤WaccessÀÉ®×¦s©ñªº¦a¤è
+			//ä¸‹åˆ—å­—ä¸²çš„://ä¹‹å¾Œè¦åŠ ä¸Šaccessæª”æ¡ˆå­˜æ”¾çš„åœ°æ–¹
 			String dataSource = "jdbc:ucanaccess://D:/accessDB/WifyPoller.accdb";
 
 			connDB = DriverManager.getConnection(dataSource);
@@ -179,7 +179,7 @@ public class BaseDAOImpl {
 					tableName = rsmd.getTableName(i);
 
 					if (!Env.MODEL_MAPPING.containsKey(tableName)) {
-						throw new Exception("Model¹ïÀ³³]©w¿ù»~!! >> tableName: " + tableName + " ¬dµL¹ïÀ³");
+						throw new Exception("Modelå°æ‡‰è¨­å®šéŒ¯èª¤!! >> tableName: " + tableName + " æŸ¥ç„¡å°æ‡‰");
 					}
 
 					modelClassName = Env.MODEL_MAPPING.get(tableName);

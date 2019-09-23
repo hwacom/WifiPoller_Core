@@ -23,10 +23,10 @@ public class Env {
 	public static final DecimalFormat df = new DecimalFormat("###,###,###", new DecimalFormatSymbols(new Locale("zh", "TW")));
 	public static final DecimalFormat df_avg = new DecimalFormat("###,###,###.###", new DecimalFormatSymbols(new Locale("zh", "TW")));
 	public static final String[] TABLE_HEADER_COLUMN_NAMES = new String[] {
-			"No.", "¤é´Á", "¥Î¤áMAC", "SID", "¥Î¤áIP", "AP MAC", "³s½uAP", "³s½uSSID", "ÀW¹D", "°T¸¹±j«×", "Âø°Tµ¥¯Å", "SNR", "­º¦¸¥X²{", "³Ì«á¥X²{", "¶Ç¿é¶q", "±µ¦¬¶q", "¶Ç¿é¥­§¡", "±µ¦¬¥­§¡"
+			"No.", "æ—¥æœŸ", "ç”¨æˆ¶MAC", "SID", "ç”¨æˆ¶IP", "AP MAC", "é€£ç·šAP", "é€£ç·šSSID", "é »é“", "è¨Šè™Ÿå¼·åº¦", "é›œè¨Šç­‰ç´š", "SNR", "é¦–æ¬¡å‡ºç¾", "æœ€å¾Œå‡ºç¾", "å‚³è¼¸é‡", "æŽ¥æ”¶é‡", "å‚³è¼¸å¹³å‡", "æŽ¥æ”¶å¹³å‡"
 	};
 	public static final String[][] TABLE_CELL_DATAS = new String[][] {
-		{"7C:D1:C3:ED:D1:17", "10.10.6.106", "AP2606", "Hwacom_WLAN", "6", "-48 dBm", "-80 dBm", "32 dBm", "2018/8/24 08:35", "2018/8/24 17:15", "12135 KB", "5739 KB", "3617 KB/¤À", "698 KB/¤À"}
+		{"7C:D1:C3:ED:D1:17", "10.10.6.106", "AP2606", "Hwacom_WLAN", "6", "-48 dBm", "-80 dBm", "32 dBm", "2018/8/24 08:35", "2018/8/24 17:15", "12135 KB", "5739 KB", "3617 KB/åˆ†", "698 KB/åˆ†"}
 	};
 	public static Integer MAX_MSG_LINES = 150;
 
@@ -39,8 +39,8 @@ public class Env {
 	public static String FIELD_NAME_CHANNEL;
 	public static String FIELD_NAME_APNAME;
 	public static String FIELD_NAME_APMACADDR;
-	public static String MIB_MOBILE_KEY_OID; //MOBILE USERºÝ©óMIB¤¤ªºKEY¸`ÂIOID >> bsnMobileStationMacAddress [.1.3.6.1.4.1.14179.2.1.4.1.1]
-	public static String MIB_AP_KEY_OID; //APºÝ©óMIB¤¤ªºKEY¸`ÂIOID >> bsnAPDot3MacAddress [.1.3.6.1.4.1.14179.2.2.1.1.1]
+	public static String MIB_MOBILE_KEY_OID; //MOBILE USERç«¯æ–¼MIBä¸­çš„KEYç¯€é»žOID >> bsnMobileStationMacAddress [.1.3.6.1.4.1.14179.2.1.4.1.1]
+	public static String MIB_AP_KEY_OID; //APç«¯æ–¼MIBä¸­çš„KEYç¯€é»žOID >> bsnAPDot3MacAddress [.1.3.6.1.4.1.14179.2.2.1.1.1]
 	public static String MIB_CHANNEL_OID;
 	public static String MIB_APNAME_OID;
 	public static String SNMP_POLLER_CRON_EXPRESSION;

@@ -73,7 +73,7 @@ public class CommonUtils {
 			public void run(){
 				try {
 					DefaultTableModel model = (DefaultTableModel)dataTable.getModel();
-					model.setRowCount(0); //¥ý²MªÅ©Ò¦³¸ê®Æ
+					model.setRowCount(0); //å…ˆæ¸…ç©ºæ‰€æœ‰è³‡æ–™
 
 					int rowNo = 1;
 					for (UserCurrentInfo entity : entities) {
@@ -146,7 +146,7 @@ public class CommonUtils {
 							StyleConstants.setForeground(attrMessage, foreground);
 							StyleConstants.setBold(attrMessage, bold);
 
-							// ±q³Ì¥½ºÝ¥[¤J
+							// å¾žæœ€æœ«ç«¯åŠ å…¥
 							String[] lines = doc.getText(0, doc.getLength()).split("\n");
 							if (lines.length >= Env.MAX_MSG_LINES) {
 								StringBuffer sb = new StringBuffer();
@@ -162,19 +162,16 @@ public class CommonUtils {
 							doc.insertString(doc.getLength(), message != null ? message : "", attrMessage);
 
 							/*
-							// ¤U¦C¬°±q³Ì«eºÝ´¡¤J
+							// ä¸‹åˆ—ç‚ºå¾žæœ€å‰ç«¯æ’å…¥
 							String[] lines = doc.getText(0, doc.getLength()).split("\n");
 							if (lines.length >= Env.MAX_MSG_LINES) {
 								StringBuffer sb = new StringBuffer();
-
 								int max = lines.length-1;
 								for (int i=0; i< Env.MAX_MSG_LINES; i++) {
 									sb.append(lines[max-i]).append("\n");
 								}
-
 								doc.remove(0, sb.length());
 							}
-
 							doc.insertString(0, message != null ? message : "", attrMessage);
 							doc.insertString(0, timestamp, attrTimestamp);
 							 */
