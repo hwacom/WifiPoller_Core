@@ -27,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.smi.VariableBinding;
 
+import com.mchange.v1.util.ArrayUtils;
 import com.snmp.poller.Env;
 import com.snmp.poller.dao.JdbcDAO;
 import com.snmp.poller.dao.impl.AccessDAOImpl;
@@ -254,29 +255,28 @@ public class PollerServiceImpl implements PollerService {
 					entity.setYyyymmdd(Env.FORMAT_YYYYMMDD_NO_SLASH.format(new Date()));
 
 					try {
-						log.error("userMacAddr: {} , userMacAddrDecimal: {}", vbValue, vbkey);
 						if (StringUtils.indexOf(vbValue, ":") != -1 && StringUtils.split(vbValue, ":").length == 6) {
 							userMacAddrIsValid = true;
 							BeanUtils.setProperty(entity, "userMacAddr", vbValue);
 							
 						} else {
 							// 若 USER_MAC_ADDR 內容格式不符則不處理此筆資料
-							log.error("entity: {}, pojoField: userMacAddr, vbValue: {} >>> discard this record !", entity, vbValue);
+							log.error("entity: {}, pojoField: userMacAddr, vbValue: {} >>> discard this record !", ArrayUtils.toString(entity.toArray()), vbValue);
 						}
 						
 					} catch (Exception e) {
 						log.error("entity: "+entity+", pojoField: userMacAddr, vbValue: "+vbValue);
 						log.error(e.toString(), e);
-						throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: userMacAddr, vbValue: "+vbValue);
+						throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: userMacAddr, vbValue: "+vbValue);
 					}
 
 					if (userMacAddrIsValid) {
 						try {
 							BeanUtils.setProperty(entity, "userMacAddrDecimal", vbkey);
 						} catch (Exception e) {
-							log.error("entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
+							log.error("entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
 							log.error(e.toString(), e);
-							throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
+							throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
 						}
 						userEntity.put(vbkey, entity);
 					}
@@ -305,9 +305,9 @@ public class PollerServiceImpl implements PollerService {
 						try {
 							BeanUtils.setProperty(entity, pojoField, vbValue);
 						} catch (Exception e) {
-							log.error("entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
+							log.error("entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: "+pojoField+", vbValue: "+vbValue);
 							log.error(e.toString(), e);
-							throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: "+pojoField+", vbValue: "+vbValue);
+							throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: "+pojoField+", vbValue: "+vbValue);
 						}
 					} else {
 						log.error("entity not found. vbkey >> " + vbkey + " , pojoField: " + pojoField);
@@ -338,9 +338,9 @@ public class PollerServiceImpl implements PollerService {
 							try {
 								BeanUtils.setProperty(entity, "apMacAddrDecimal", vbkey);
 							} catch (Exception e) {
-								log.error("entity: "+entity+", pojoField: apMacAddrDecimal, vbValue: "+vbValue);
+								log.error("entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: apMacAddrDecimal, vbValue: "+vbValue);
 								log.error(e.toString(), e);
-								throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: apMacAddrDecimal, vbValue: "+vbValue);
+								throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: apMacAddrDecimal, vbValue: "+vbValue);
 							}
 						}
 					}
@@ -370,9 +370,9 @@ public class PollerServiceImpl implements PollerService {
 							try {
 								BeanUtils.setProperty(entity, "apName", vbValue);
 							} catch (Exception e) {
-								log.error("entity: "+entity+", pojoField: apName, vbValue: "+vbValue);
+								log.error("entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: apName, vbValue: "+vbValue);
 								log.error(e.toString(), e);
-								throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: apName, vbValue: "+vbValue);
+								throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: apName, vbValue: "+vbValue);
 							}
 						}
 					}
@@ -409,9 +409,9 @@ public class PollerServiceImpl implements PollerService {
 							try {
 								BeanUtils.setProperty(entity, "channel", vbValue);
 							} catch (Exception e) {
-								log.error("entity: "+entity+", pojoField: channel, vbValue: "+vbValue);
+								log.error("entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: channel, vbValue: "+vbValue);
 								log.error(e.toString(), e);
-								throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: channel, vbValue: "+vbValue);
+								throw new Exception(e.toString()+" >> entity: "+ArrayUtils.toString(entity.toArray())+", pojoField: channel, vbValue: "+vbValue);
 							}
 						}
 					}
@@ -587,7 +587,12 @@ public class PollerServiceImpl implements PollerService {
 			insertEntity.setAvgReceiveData(new Double(0));		// 第一次出現時平均值給0
 			insertEntity.setCreateBy(Env.SYSTEM_USER_NAME);
 			insertEntity.setCreateTime(nowDate);
-			accessDAO.insertUserCurrentInfo(insertEntity);
+			
+			try {
+				accessDAO.insertUserCurrentInfo(insertEntity);
+			} catch (Exception e) {
+				log.error("insert failed! entity: {}" + ArrayUtils.toString(insertEntity.toArray()));
+			}
 		}
 
 		accessDAO.doCommit();

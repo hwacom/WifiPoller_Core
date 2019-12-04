@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mchange.v1.util.ArrayUtils;
 import com.snmp.poller.dao.JdbcDAO;
 import com.snmp.poller.enums.MsgLevel;
 import com.snmp.poller.model.MibOidSetting;
@@ -83,6 +84,7 @@ public class AccessDAOImpl extends BaseDAOImpl implements JdbcDAO {
 			return st.executeUpdate();
 
 		} catch (Exception e) {
+			log.error("insert failed! entity: {}" + ArrayUtils.toString(entity.toArray()));
 			log.error(e.toString(), e);
 			CommonUtils.outputMsg(MsgLevel.ERROR, AccessDAOImpl.class, e.toString());
 			return 0;
