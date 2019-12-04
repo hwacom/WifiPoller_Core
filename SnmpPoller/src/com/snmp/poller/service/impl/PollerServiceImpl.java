@@ -244,6 +244,8 @@ public class PollerServiceImpl implements PollerService {
 				final String oid = entry.getKey();
 
 				for (VariableBinding vb : entry.getValue()) {
+					boolean userMacAddrIsValid = false;
+					
 					final String vbkey = getVbKey(oid, vb.getOid().toString());
 					final String vbValue = vb.getVariable().toString();
 					vbkeyMacMapping.put(vbkey, vbValue);
@@ -252,21 +254,32 @@ public class PollerServiceImpl implements PollerService {
 					entity.setYyyymmdd(Env.FORMAT_YYYYMMDD_NO_SLASH.format(new Date()));
 
 					try {
-						BeanUtils.setProperty(entity, "userMacAddr", vbValue);
+						log.error("userMacAddr: {} , userMacAddrDecimal: {}", vbValue, vbkey);
+						if (StringUtils.indexOf(vbValue, ":") != -1 && StringUtils.split(vbValue, ":").length == 6) {
+							userMacAddrIsValid = true;
+							BeanUtils.setProperty(entity, "userMacAddr", vbValue);
+							
+						} else {
+							// 若 USER_MAC_ADDR 內容格式不符則不處理此筆資料
+							log.error("entity: {}, pojoField: userMacAddr, vbValue: {} >>> discard this record !", entity, vbValue);
+						}
+						
 					} catch (Exception e) {
 						log.error("entity: "+entity+", pojoField: userMacAddr, vbValue: "+vbValue);
 						log.error(e.toString(), e);
 						throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: userMacAddr, vbValue: "+vbValue);
 					}
 
-					try {
-						BeanUtils.setProperty(entity, "userMacAddrDecimal", vbkey);
-					} catch (Exception e) {
-						log.error("entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
-						log.error(e.toString(), e);
-						throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
+					if (userMacAddrIsValid) {
+						try {
+							BeanUtils.setProperty(entity, "userMacAddrDecimal", vbkey);
+						} catch (Exception e) {
+							log.error("entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
+							log.error(e.toString(), e);
+							throw new Exception(e.toString()+" >> entity: "+entity+", pojoField: userMacAddrDecimal, vbValue: "+vbValue);
+						}
+						userEntity.put(vbkey, entity);
 					}
-					userEntity.put(vbkey, entity);
 				}
 			}
 

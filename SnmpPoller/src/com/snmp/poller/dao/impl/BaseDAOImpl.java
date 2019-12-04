@@ -29,7 +29,7 @@ public class BaseDAOImpl {
 			Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
 
 			//下列字串的://之後要加上access檔案存放的地方
-			String dataSource = "jdbc:ucanaccess://D:/accessDB/WifyPoller.accdb";
+			String dataSource = "jdbc:ucanaccess://C:/accessDB/WifyPoller.accdb";
 
 			connDB = DriverManager.getConnection(dataSource);
 			connDB.setAutoCommit(false);
